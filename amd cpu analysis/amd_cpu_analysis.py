@@ -12,7 +12,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import PassiveAggressiveRegressor
 
 data = pd.read_csv("AMD CPU spreadsheet(cleaned).csv", encoding = 'latin1') 
-## this drops null values from the dataset   
+## this drops null values from the dataset  
 print(data.info())   
 
 coreNum = data["# of CPU Cores"].sum()
@@ -30,4 +30,15 @@ plt.figure(figsize=(10, 8))
 plt.style.use('fivethirtyeight')
 plt.title("Distribution of threads")
 sns.distplot(data['# of Threads'])
-plt.show()  
+plt.show()    
+
+## model for a hypothetical cpu 
+x = np.array(data[['# of CPU Cores', '# of Threads', 'Base Clock(GHz)', 'L1 Cache (KB)', 'L2 Cache(MB)', 'L3 Cache(MB)']])
+y = np.array(data["1kU Pricing(USD)"])  
+xtrain, xtest, ytrain, ytest = train_test_split(x, y, test_size=0.2, random_state=42)
+
+model = PassiveAggressiveRegressor()
+model.fit(xtrain, ytrain)
+model.score(xtest, ytest)  
+features = np.array([[8, 16, 4, 120, 11.5, 24.5]])
+model.predict(features)
