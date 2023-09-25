@@ -11,7 +11,7 @@ from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import PassiveAggressiveRegressor
 
-data = pd.read_csv("AMD CPU spreadsheet(cleaned).csv", encoding = 'latin1') 
+data = pd.read_csv("AMD CPU spreadsheet(cleaned with no nulls).csv", encoding = 'latin1') 
 ## this drops null values from the dataset  
 print(data.info())   
 
@@ -24,21 +24,21 @@ plt.figure(figsize=(10, 8))
 plt.style.use('fivethirtyeight')
 plt.title("Distribution of prices") 
 sns.distplot(data['1kU Pricing(USD)']) 
-plt.xticks(np.arange(min(data['1kU Pricing(USD)']), max(data['1kU Pricing(USD)'])+1, 2))
+## plt.xticks(np.arange(min(data['1kU Pricing(USD)']), max(data['1kU Pricing(USD)'])+1, 1250))
 plt.show()   
 
 plt.figure(figsize=(10, 8)) 
 plt.style.use('fivethirtyeight')
 plt.title("Distribution of threads") 
 sns.distplot(data['# of Threads']) 
-plt.xticks(np.arange(min(data['# of Threads']), max(data['# of Threads'])+1, 2))
+plt.xticks(np.arange(0, max(data['# of Threads'])+1, 10))
 plt.show()     
 
 plt.figure(figsize=(10, 8)) 
 plt.style.use('fivethirtyeight')
 plt.title("Distribution of cores") 
 sns.distplot(data['# of CPU Cores']) 
-plt.xticks(np.arange(min(data['# of Threads']), max(data['# of Threads'])+1, 2))
+plt.xticks(np.arange(0, max(data['# of CPU Cores'])+1, 4))
 plt.show() 
 
 ## model for a hypothetical cpu 
@@ -50,4 +50,4 @@ model = PassiveAggressiveRegressor()
 model.fit(xtrain, ytrain)
 model.score(xtest, ytest)  
 features = np.array([[8, 16, 4, 120, 11.5, 24.5]])
-model.predict(features)
+prediction = model.predict(features)
