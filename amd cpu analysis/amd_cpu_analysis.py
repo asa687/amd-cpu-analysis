@@ -9,9 +9,10 @@ import seaborn as sns
 import plotly.express as px
 from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import PassiveAggressiveRegressor
+from sklearn.linear_model import PassiveAggressiveRegressor 
+from sklearn.neural_network import MLPClassifier
 
-data = pd.read_csv("AMD CPU spreadsheet(cleaned nulls are -1).csv", encoding = 'latin1') 
+data = pd.read_csv("AMD CPU spreadsheet(cleaned with no nulls).csv", encoding = 'latin1')  
 ## this drops null values from the dataset  
 print(data.info())   
 
@@ -44,11 +45,24 @@ plt.show()
 ## model for a hypothetical cpu 
 x = np.array(data[['# of CPU Cores', '# of Threads', 'Base Clock(GHz)', 'L1 Cache (KB)', 'L2 Cache(MB)', 'L3 Cache(MB)']])
 y = np.array(data["1kU Pricing(USD)"])  
-xtrain, xtest, ytrain, ytest = train_test_split(x, y, test_size=0.4, random_state=42)
+xtrain, xtest, ytrain, ytest = train_test_split(x, y, test_size=0.5, random_state=42)
 
 model = PassiveAggressiveRegressor()
 model.fit(xtrain, ytrain)
 model.score(xtest, ytest)  
 features = np.array([[8, 16, 4, 120, 11.5, 24.5]])
-prediction = model.predict(features) 
-print(prediction)
+prediction = model.predict(features)   
+## filters the prediction model such that 0 or less values are not considered as they are invalid
+while prediction <= 0:   
+    prediction = model.predict(features)
+print(prediction)  
+
+
+clf = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(15, 10), random_state=42, batch_size = 300) 
+clf.fit(data[['# of CPU Cores', '# of Threads', 'Base Clock(GHz)', 'L1 Cache (KB)', 'L2 Cache(MB)', 'L3 Cache(MB)']].values, data["1kU Pricing(USD)"].values)   
+MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(42, 10), random_state=42, batch_size = 300)
+prediction2 = clf.predict(features)  
+while prediction2 <= 0:   
+    prediction2 = clf.predict(features)
+print(prediction2)
+ 
