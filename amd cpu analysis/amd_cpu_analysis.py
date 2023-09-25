@@ -20,17 +20,26 @@ threadNum = data["# of Threads"].sum()
 baseClock = data["Base Clock(GHz)"].sum() 
  
 
-plt.figure(figsize=(10, 8))
+plt.figure(figsize=(10, 8)) 
 plt.style.use('fivethirtyeight')
-plt.title("Distribution of prices")
-sns.distplot(data['1kU Pricing(USD)'])
+plt.title("Distribution of prices") 
+sns.distplot(data['1kU Pricing(USD)']) 
+plt.xticks(np.arange(min(data['1kU Pricing(USD)']), max(data['1kU Pricing(USD)'])+1, 2))
 plt.show()   
 
-plt.figure(figsize=(10, 8))
+plt.figure(figsize=(10, 8)) 
 plt.style.use('fivethirtyeight')
-plt.title("Distribution of threads")
-sns.distplot(data['# of Threads'])
-plt.show()    
+plt.title("Distribution of threads") 
+sns.distplot(data['# of Threads']) 
+plt.xticks(np.arange(min(data['# of Threads']), max(data['# of Threads'])+1, 2))
+plt.show()     
+
+plt.figure(figsize=(10, 8)) 
+plt.style.use('fivethirtyeight')
+plt.title("Distribution of cores") 
+sns.distplot(data['# of CPU Cores']) 
+plt.xticks(np.arange(min(data['# of Threads']), max(data['# of Threads'])+1, 2))
+plt.show() 
 
 ## model for a hypothetical cpu 
 x = np.array(data[['# of CPU Cores', '# of Threads', 'Base Clock(GHz)', 'L1 Cache (KB)', 'L2 Cache(MB)', 'L3 Cache(MB)']])
