@@ -52,8 +52,15 @@ xtrain, xtest, ytrain, ytest = train_test_split(x, y, test_size=0.5, random_stat
 
 model = PassiveAggressiveRegressor()
 model.fit(xtrain, ytrain)
-model.score(xtest, ytest)  
-features = np.array([[8, 16, 4]])
+model.score(xtest, ytest)   
+print("Enter the number of cores: ")  
+cores = int(input())
+print("Enter the number of threads: ") 
+threads = int(input())
+print("Enter the base clock in Ghz: ")  
+baseClock = float(input())
+
+features = np.array([[cores, threads, baseClock]])
 prediction = model.predict(features)   
 print(prediction)  
 
